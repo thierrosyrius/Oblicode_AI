@@ -18,7 +18,7 @@ jobs:
         with:
           registry: ghcr.io
           username: thierrosyrius
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKER_GITH_SECRET }}
 
       - name: Build Docker image
         run: docker build -t ghcr.io/thierrosyrius/oblicode_ai:latest .
@@ -26,14 +26,14 @@ jobs:
       - name: Push Docker image
         run: docker push ghcr.io/thierrosyrius/oblicode_ai:latest
 
-      - name: Deploy to AWS EC2
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ubuntu
-          key: ${{ secrets.AWS_PRIVATE_KEY }}
-          script: |
-            docker pull ghcr.io/thierrosyrius/oblicode_ai:latest
-            docker stop rag_app || true
-            docker rm rag_app || true
-            docker run -d -p 80:5001 --name rag_app ghcr.io/thierrosyrius/oblicode_ai:latest
+      # - name: Deploy to AWS EC2
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${{ secrets.AWS_HOST }}
+      #     username: ubuntu
+      #     key: ${{ secrets.AWS_PRIVATE_KEY }}
+      #     script: |
+      #       docker pull ghcr.io/thierrosyrius/oblicode_ai:latest
+      #       docker stop rag_app || true
+      #       docker rm rag_app || true
+      #       docker run -d -p 80:5001 --name rag_app ghcr.io/thierrosyrius/oblicode_ai:latest
