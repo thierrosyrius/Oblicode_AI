@@ -18,7 +18,7 @@ jobs:
         with:
           registry: ghcr.io
           username: thierrosyrius
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.Github_TOKEN }}
 
       - name: Build Docker image
         run: docker build -t ghcr.io/thierrosyrius/oblicode_ai:latest .
