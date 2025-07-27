@@ -3,7 +3,7 @@ name: CI/CD for RAG App
 on:
   push:
     branches:
-      - main   # Trigger only on pushes to main
+      - main
 
 jobs:
   build-and-deploy:
@@ -21,10 +21,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/oblicode_ai:latest .
+        run: docker build -t ghcr.io/thierrosyrius/oblicode_ai:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/oblicode_ai:latest
+        run: docker push ghcr.io/thierrosyrius/oblicode_ai:latest
 
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@v0.1.10
@@ -33,7 +33,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
-            docker pull ghcr.io/${{ github.repository }}/oblicode_ai:latest
+            docker pull ghcr.io/thierrosyrius/oblicode_ai:latest
             docker stop rag_app || true
             docker rm rag_app || true
-            docker run -d -p 80:5001 --name rag_app ghcr.io/${{ github.repository }}/oblicode_ai:latest
+            docker run -d -p 80:5001 --name rag_app ghcr.io/thierrosyrius/oblicode_ai:latest
